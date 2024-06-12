@@ -1,9 +1,6 @@
 import express, { Request, Response } from "express";
 import cors from "cors";
 import { APP_PORT } from "./config";
-import { AccountsRepo } from "./db";
-import { AccountDTO, LoginAccountDTO } from "./dto";
-const repo = new AccountsRepo();
 
 const app = express();
 app.use(
