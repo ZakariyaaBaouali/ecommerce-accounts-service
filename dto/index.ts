@@ -29,3 +29,7 @@ export interface AddAccountPassword {
   id: string;
   password: string;
 }
+
+export interface JwtPayload {
+  id: string;
+}
