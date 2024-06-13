@@ -22,9 +22,13 @@ export class Utils {
 
   //✅✅✅
   public getTokenizedUser(token: string): string | null {
-    const { id } = jwt.verify(token, jwt_secret) as JwtPayload;
-    if (!id) return null;
-    return id;
+    try {
+      const { id } = jwt.verify(token, jwt_secret) as JwtPayload;
+      if (!id) return null;
+      return id;
+    } catch (error) {
+      return null;
+    }
   }
 
   //✅✅✅
