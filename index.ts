@@ -1,25 +1,21 @@
-import express, { Request, Response } from "express";
-import cors from "cors";
-import { APP_PORT } from "./config";
+import express from "express";
+import { APP_PORT, initServer } from "./config";
 
 const app = express();
-app.use(
-  cors({
-    origin: "*",
-    methods: ["GET", "POST", "PATCH", "DELETE"],
-  })
-);
-app.use(express.json());
-app.set("view engine", "ejs");
 
-app.get("/", (req: Request, res: Response) => {
-  res.render("index");
-});
-
-app.get("/accounts", async (req: Request, res: Response) => {
-  return res.status(200).send("data");
-});
+initServer(app);
+app.use("/accounts/avatar", express.static("storage"));
 
 app.listen(APP_PORT, () =>
   console.log(`Server start at port ${APP_PORT} ✅✅✅`)
 );
+
+//globals vars
+declare global {
+  namespace Express {
+    interface Request {
+      avatar: string;
+      login_user: string;
+    }
+  }
+}
