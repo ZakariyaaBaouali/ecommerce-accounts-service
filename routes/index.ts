@@ -2,23 +2,30 @@ import { Router } from "express";
 import { AccountController } from "../controller";
 import passport from "passport";
 import { AccountMiddleware } from "../middlewares";
+import { avatarUploader } from "../config";
 
 //✅✅✅
 const router = Router();
 const controller = new AccountController();
 const middleware = new AccountMiddleware();
+const uploader = avatarUploader();
 
 //account ✅✅
-router.get("/", middleware.getAccount, controller.getAccounts);
+router.get("/", controller.getAccounts);
 
 router.post("/create", controller.createAccount);
 
-router.get("/login", controller.loginAccount);
+router.post("/login", controller.loginAccount);
 
-router.delete("/delete", middleware.getAccount, controller.deleteAccount);
+router.delete("/delete", controller.deleteAccount);
 
 //avatar ✅✅
-router.patch("/avatar", middleware.getAccount, controller.addAccountAvatar);
+router.patch(
+  "/avatar",
+  middleware.getAccount,
+  uploader.single("avatar"),
+  controller.addAccountAvatar
+);
 
 //password ✅✅
 router.patch(
@@ -38,7 +45,7 @@ router.get(
 router.get(
   "/google/callback",
   passport.authenticate("google", {
-    failureRedirect: "/google/failed",
+    failureRedirect: "/api/v1/accounts/google/failed",
   }),
   controller.getGoogleAccount
 );
