@@ -1,7 +1,5 @@
 import { NextFunction, Request, Response } from "express";
-import { Utils } from "../utils";
-
-const utils = new Utils();
+import { utils } from "..";
 
 export class AccountMiddleware {
   //✅✅✅
