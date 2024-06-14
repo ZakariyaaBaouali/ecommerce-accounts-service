@@ -5,11 +5,13 @@ import {
   AddAccountAvatar,
   AddAccountPassword,
   CreateAccountDTO,
+  GoogleAccount,
   LoginAccountDTO,
 } from "../dto";
+import { accountRepo, utils } from "..";
 
-const accountRepo = new AccountsRepo();
-const utils = new Utils();
+//const accountRepo = new AccountsRepo();
+//const utils = new Utils();
 
 export class AccountController {
   //✅✅✅
@@ -139,5 +141,30 @@ export class AccountController {
     return res
       .status(200)
       .send({ message: "account deleted ✅✅", user: data });
+  }
+
+  //✅✅
+  public async getGoogleAccount(req: Request, res: Response) {
+    const accountId = <GoogleAccount>req.user;
+    if (accountId) {
+      const findAccount = await accountRepo.getAccountById(accountId.id);
+      if (!findAccount)
+        return res.status(400).send({
+          message: `account with id : ${accountId.id} not exits ✅✅✅`,
+        });
+
+      const token = utils.genToken(accountId.id);
+      return res.status(200).send({ token });
+    }
+    return res
+      .status(400)
+      .send(`can't find the google account please trye to login ✅✅✅`);
+  }
+
+  //✅✅✅
+  public async failedGoogleLogin(req: Request, res: Response) {
+    return res
+      .status(400)
+      .send(`we find error with create ypur google account ✅✅✅`);
   }
 }
