@@ -33,3 +33,7 @@ export interface AddAccountPassword {
 export interface JwtPayload {
   id: string;
 }
+
+export interface GoogleAccount {
+  id: string;
+}
